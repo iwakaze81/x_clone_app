@@ -1,0 +1,5 @@
+class: Post
+table: post
+fields:
+  body: String
+  createdAt: DateTime

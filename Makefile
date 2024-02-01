@@ -6,6 +6,10 @@ setup/backend:
 codegen/backend:
 	cd x_clone_app_server && serverpod generate
 
+:PHONY: create/migration
+create/migration:
+	cd x_clone_app_server && serverpod create-migration
+
 :PHONY: run/backend
 run/backend:
 	cd x_clone_app_server && dart bin/main.dart --apply-migrations
