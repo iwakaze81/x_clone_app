@@ -1,0 +1,11 @@
+{
+  "moduleName": "x_clone_app",
+  "tables": [],
+  "installedModules": [
+    {
+      "module": "serverpod",
+      "version": "20240115074235544"
+    }
+  ],
+  "migrationApiVersion": 1
+}

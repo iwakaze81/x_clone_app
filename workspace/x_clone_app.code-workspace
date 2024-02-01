@@ -1,0 +1,30 @@
+{
+  "folders": [
+    {
+      "name": "workspace",
+      "path": "."
+    },
+    {
+      "name": "client",
+      "path": "../x_clone_app_client"
+    },
+    {
+      "name": "flutter",
+      "path": "../x_clone_app_flutter"
+    },
+    {
+      "name": "server",
+      "path": "../x_clone_app_server"
+    }
+  ],
+  "settings": {
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/*.code-search": true,
+      "**/.fvm/**": true
+    },
+    "cSpell.ignoreWords": ["riverpod",],
+    "dart.sdkPath": "../x_clone_app_flutter/.fvm/flutter_sdk"
+  }
+}
