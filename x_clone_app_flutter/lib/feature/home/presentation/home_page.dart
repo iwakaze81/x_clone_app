@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:x_clone_app_flutter/feature/post/state/posts_notifier.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+@RoutePage()
+class HomePage extends ConsumerWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

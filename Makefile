@@ -13,3 +13,11 @@ create/migration:
 :PHONY: run/backend
 run/backend:
 	cd x_clone_app_server && dart bin/main.dart --apply-migrations
+
+:PHONY: run/pub_get
+run/pub_get:
+	cd x_clone_app_flutter && fvm flutter pub get
+
+:PHONY: run/build_runner
+run/build_runner:
+	cd x_clone_app_flutter && fvm flutter pub run build_runner build --delete-conflicting-outputs
