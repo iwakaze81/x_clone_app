@@ -25,6 +25,18 @@
       "**/.fvm/**": true
     },
     "cSpell.ignoreWords": ["riverpod",],
-    "dart.sdkPath": "../x_clone_app_flutter/.fvm/flutter_sdk"
+    "dart.sdkPath": "../x_clone_app_flutter/.fvm/flutter_sdk",
+    "sqltools.connections": [
+      {
+        "previewLimit": 50,
+        "server": "localhost",
+        "port": 8090,
+        "driver": "PostgreSQL",
+        "name": "x_clone_app",
+        "database": "x_clone_app",
+        "username": "postgres",
+        "password": "DbTh_NE6QCi-6_3UgBVKBHQLtz6DRTBv"
+      }
+    ]
   }
 }

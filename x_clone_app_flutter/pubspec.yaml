@@ -14,8 +14,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.4
+  freezed: ^2.4.6
+  freezed_annotation: ^2.4.1
+  get_it: ^7.6.7
   hooks_riverpod: ^2.4.9
-  serverpod_flutter: 1.2.0
+  serverpod_auth_email_flutter: 1.2.2
+  serverpod_auth_shared_flutter: 1.2.2
+  serverpod_flutter: 1.2.2
   x_clone_app_client:
     path: ../x_clone_app_client
 

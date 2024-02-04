@@ -54,7 +54,7 @@ abstract class Post extends _i1.SerializableEntity {
     return {
       if (id != null) 'id': id,
       'body': body,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toJson(),
     };
   }
 }

@@ -10,3 +10,6 @@ doc/api/
 
 # Passwords file
 config/passwords.yaml
+
+# fvm
+.fvm/

@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class Post extends _i1.TableRow {
   Post._({
@@ -56,7 +57,7 @@ abstract class Post extends _i1.TableRow {
     return {
       if (id != null) 'id': id,
       'body': body,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toJson(),
     };
   }
 
@@ -73,13 +74,14 @@ abstract class Post extends _i1.TableRow {
   @override
   Map<String, dynamic> allToJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'body': body,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toJson(),
     };
   }
 
   @override
+  @Deprecated('Will be removed in 2.0.0')
   void setColumn(
     String columnName,
     value,
