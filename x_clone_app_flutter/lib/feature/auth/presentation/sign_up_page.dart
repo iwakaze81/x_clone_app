@@ -1,6 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:x_clone_app_flutter/feature/auth/model/email_auth.dart';
+import 'package:x_clone_app_flutter/router/app_router.dart';
 
 @RoutePage()
 class SignUpPage extends HookConsumerWidget {
@@ -8,6 +11,10 @@ class SignUpPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userName = useTextEditingController();
+    final email = useTextEditingController();
+    final password = useTextEditingController();
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(32.0),
@@ -38,6 +45,7 @@ class SignUpPage extends HookConsumerWidget {
           ),
           const SizedBox(height: 16),
           TextFormField(
+            controller: userName,
             decoration: InputDecoration(
               hintText: '名前',
               hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -45,6 +53,7 @@ class SignUpPage extends HookConsumerWidget {
           ),
           const SizedBox(height: 16),
           TextFormField(
+            controller: email,
             decoration: InputDecoration(
               hintText: 'メールアドレス',
               hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -52,6 +61,7 @@ class SignUpPage extends HookConsumerWidget {
           ),
           const SizedBox(height: 16),
           TextFormField(
+            controller: password,
             decoration: InputDecoration(
               hintText: 'パスワード',
               hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -60,7 +70,16 @@ class SignUpPage extends HookConsumerWidget {
           const SizedBox(height: 16),
           FilledButton(
             child: const Text('登録'),
-            onPressed: () {},
+            onPressed: () async {
+              final result = await ref.read(emailAuthProvider).signUp(
+                  userName: userName.text,
+                  email: email.text,
+                  password: password.text);
+
+              if (result && context.mounted) {
+                context.router.push(const VerificationCodeRoute());
+              }
+            },
           ),
         ],
       ),

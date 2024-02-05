@@ -21,8 +21,8 @@ run/backend:
 .PHONY: run/pub_get
 run/pub_get:
 	cd x_clone_app_flutter && fvm flutter pub get; \
-	cd ../x_clone_app_server && flutter pub get; \
-	cd ../x_clone_app_client && flutter pub get
+	cd ../x_clone_app_server && dart pub get; \
+	cd ../x_clone_app_client && dart pub get
 
 .PHONY: run/build_runner
 run/build_runner:

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:x_clone_app_client/x_clone_app_client.dart';
-import 'package:x_clone_app_flutter/serverpod/api_client.dart';
 
 final postsNotifierProvider =
     AsyncNotifierProvider.autoDispose<PostsNotifier, List<Post>>(

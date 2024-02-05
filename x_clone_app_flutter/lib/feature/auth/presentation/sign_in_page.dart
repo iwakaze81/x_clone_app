@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:x_clone_app_flutter/feature/auth/model/email_auth.dart';
+import 'package:x_clone_app_flutter/router/app_router.dart';
 
 @RoutePage()
 class SignInPage extends HookConsumerWidget {
@@ -60,10 +61,14 @@ class SignInPage extends HookConsumerWidget {
           const SizedBox(height: 16),
           FilledButton(
             child: const Text('ログイン'),
-            onPressed: () {
-              ref
-                  .read(emailAuthProvider)
-                  .signIn(emailController.text, passwordController.text);
+            onPressed: () async {
+              final result = await ref.read(emailAuthProvider).signIn(
+                  email: emailController.text,
+                  password: passwordController.text);
+
+              if (result && context.mounted) {
+                context.router.replaceAll([const HomeRoute()]);
+              }
             },
           ),
         ],

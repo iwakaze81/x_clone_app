@@ -45,6 +45,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const SignUpPage(),
       );
     },
+    VerificationCodeRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const VerificationCodePage(),
+      );
+    },
   };
 }
 
@@ -114,6 +120,20 @@ class SignUpRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SignUpRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [VerificationCodePage]
+class VerificationCodeRoute extends PageRouteInfo<void> {
+  const VerificationCodeRoute({List<PageRouteInfo>? children})
+      : super(
+          VerificationCodeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'VerificationCodeRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
