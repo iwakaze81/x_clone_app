@@ -26,6 +26,7 @@
     },
     "cSpell.ignoreWords": ["riverpod",],
     "dart.sdkPath": "../x_clone_app_flutter/.fvm/flutter_sdk",
+    "dart.flutterSdkPath": "../x_clone_app_flutter/.fvm/flutter_sdk",
     "sqltools.connections": [
       {
         "previewLimit": 50,
