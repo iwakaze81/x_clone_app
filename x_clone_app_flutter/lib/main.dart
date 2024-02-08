@@ -23,6 +23,7 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(centerTitle: true),
       ),
       routerConfig: appRouter.config(),
     );

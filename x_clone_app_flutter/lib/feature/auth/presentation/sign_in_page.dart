@@ -67,7 +67,10 @@ class SignInPage extends HookConsumerWidget {
                   password: passwordController.text);
 
               if (result && context.mounted) {
-                context.router.replaceAll([const HomeRoute()]);
+                context.router.pushAndPopUntil(
+                  const HomeRoute(),
+                  predicate: (route) => false,
+                );
               }
             },
           ),
