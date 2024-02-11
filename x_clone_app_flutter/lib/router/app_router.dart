@@ -8,6 +8,7 @@ import 'package:x_clone_app_flutter/feature/home/presentation/home_page.dart';
 import 'package:x_clone_app_flutter/feature/auth/presentation/auth_page.dart';
 import 'package:x_clone_app_flutter/feature/message/presentation/message_page.dart';
 import 'package:x_clone_app_flutter/feature/notification/presentation/notification_page.dart';
+import 'package:x_clone_app_flutter/feature/post/presentation/post_page.dart';
 import 'package:x_clone_app_flutter/feature/root/presentation/root_page.dart';
 import 'package:x_clone_app_flutter/feature/search/presentation/search_page.dart';
 import 'package:x_clone_app_flutter/router/auth_guard.dart';
@@ -30,11 +31,46 @@ class AppRouter extends _$AppRouter {
         initial: true,
         guards: const [AuthGuard()],
         children: [
-          AdaptiveRoute(page: HomeRoute.page),
-          AdaptiveRoute(page: SearchRoute.page),
-          AdaptiveRoute(page: CommunityRoute.page),
-          AdaptiveRoute(page: NotificationRoute.page),
-          AdaptiveRoute(page: MessageRoute.page),
+          AutoRoute(
+            initial: true,
+            page: HomeTabRoute.page,
+            children: [
+              AutoRoute(
+                initial: true,
+                page: HomeRoute.page,
+              ),
+              CustomRoute(
+                page: PostRoute.page,
+                transitionsBuilder: TransitionsBuilders.slideBottom,
+                durationInMilliseconds: 250,
+                reverseDurationInMilliseconds: 250,
+              ),
+            ],
+          ),
+          AutoRoute(
+            page: SearchTabRoute.page,
+            children: [
+              AutoRoute(initial: true, page: SearchRoute.page),
+            ],
+          ),
+          AutoRoute(
+            page: CommunityTabRoute.page,
+            children: [
+              AutoRoute(initial: true, page: CommunityRoute.page),
+            ],
+          ),
+          AutoRoute(
+            page: NotificationTabRoute.page,
+            children: [
+              AutoRoute(initial: true, page: NotificationRoute.page),
+            ],
+          ),
+          AutoRoute(
+            page: MessageTabRoute.page,
+            children: [
+              AutoRoute(initial: true, page: MessageRoute.page),
+            ],
+          ),
         ],
       ),
       AdaptiveRoute(page: AuthRoute.page),
@@ -43,4 +79,29 @@ class AppRouter extends _$AppRouter {
       AdaptiveRoute(page: VerificationCodeRoute.page),
     ];
   }
+}
+
+@RoutePage()
+class HomeTabPage extends AutoRouter {
+  const HomeTabPage({super.key});
+}
+
+@RoutePage()
+class SearchTabPage extends AutoRouter {
+  const SearchTabPage({super.key});
+}
+
+@RoutePage()
+class CommunityTabPage extends AutoRouter {
+  const CommunityTabPage({super.key});
+}
+
+@RoutePage()
+class NotificationTabPage extends AutoRouter {
+  const NotificationTabPage({super.key});
+}
+
+@RoutePage()
+class MessageTabPage extends AutoRouter {
+  const MessageTabPage({super.key});
 }

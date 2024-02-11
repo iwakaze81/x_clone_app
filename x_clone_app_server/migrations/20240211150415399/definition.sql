@@ -5,9 +5,24 @@ BEGIN;
 --
 CREATE TABLE "post" (
     "id" serial PRIMARY KEY,
-    "body" text NOT NULL,
+    "userId" integer NOT NULL,
+    "content" text NOT NULL,
     "createdAt" timestamp without time zone NOT NULL
 );
+
+-- Indexes
+CREATE INDEX "post_user_id_idx" ON "post" USING btree ("userId");
+
+--
+-- Class User as table user
+--
+CREATE TABLE "user" (
+    "id" serial PRIMARY KEY,
+    "userInfoId" integer NOT NULL
+);
+
+-- Indexes
+CREATE UNIQUE INDEX "user_info_id_unique_idx" ON "user" USING btree ("userInfoId");
 
 --
 -- Class AuthKey as table serverpod_auth_key
@@ -230,6 +245,124 @@ CREATE INDEX "serverpod_session_log_touched_idx" ON "serverpod_session_log" USIN
 CREATE INDEX "serverpod_session_log_isopen_idx" ON "serverpod_session_log" USING btree ("isOpen");
 
 --
+-- Class EmailAuth as table serverpod_email_auth
+--
+CREATE TABLE "serverpod_email_auth" (
+    "id" serial PRIMARY KEY,
+    "userId" integer NOT NULL,
+    "email" text NOT NULL,
+    "hash" text NOT NULL
+);
+
+-- Indexes
+CREATE UNIQUE INDEX "serverpod_email_auth_email" ON "serverpod_email_auth" USING btree ("email");
+
+--
+-- Class EmailCreateAccountRequest as table serverpod_email_create_request
+--
+CREATE TABLE "serverpod_email_create_request" (
+    "id" serial PRIMARY KEY,
+    "userName" text NOT NULL,
+    "email" text NOT NULL,
+    "hash" text NOT NULL,
+    "verificationCode" text NOT NULL
+);
+
+-- Indexes
+CREATE UNIQUE INDEX "serverpod_email_auth_create_account_request_idx" ON "serverpod_email_create_request" USING btree ("email");
+
+--
+-- Class EmailFailedSignIn as table serverpod_email_failed_sign_in
+--
+CREATE TABLE "serverpod_email_failed_sign_in" (
+    "id" serial PRIMARY KEY,
+    "email" text NOT NULL,
+    "time" timestamp without time zone NOT NULL,
+    "ipAddress" text NOT NULL
+);
+
+-- Indexes
+CREATE INDEX "serverpod_email_failed_sign_in_email_idx" ON "serverpod_email_failed_sign_in" USING btree ("email");
+CREATE INDEX "serverpod_email_failed_sign_in_time_idx" ON "serverpod_email_failed_sign_in" USING btree ("time");
+
+--
+-- Class EmailReset as table serverpod_email_reset
+--
+CREATE TABLE "serverpod_email_reset" (
+    "id" serial PRIMARY KEY,
+    "userId" integer NOT NULL,
+    "verificationCode" text NOT NULL,
+    "expiration" timestamp without time zone NOT NULL
+);
+
+-- Indexes
+CREATE UNIQUE INDEX "serverpod_email_reset_verification_idx" ON "serverpod_email_reset" USING btree ("verificationCode");
+
+--
+-- Class GoogleRefreshToken as table serverpod_google_refresh_token
+--
+CREATE TABLE "serverpod_google_refresh_token" (
+    "id" serial PRIMARY KEY,
+    "userId" integer NOT NULL,
+    "refreshToken" text NOT NULL
+);
+
+-- Indexes
+CREATE UNIQUE INDEX "serverpod_google_refresh_token_userId_idx" ON "serverpod_google_refresh_token" USING btree ("userId");
+
+--
+-- Class UserImage as table serverpod_user_image
+--
+CREATE TABLE "serverpod_user_image" (
+    "id" serial PRIMARY KEY,
+    "userId" integer NOT NULL,
+    "version" integer NOT NULL,
+    "url" text NOT NULL
+);
+
+-- Indexes
+CREATE INDEX "serverpod_user_image_user_id" ON "serverpod_user_image" USING btree ("userId", "version");
+
+--
+-- Class UserInfo as table serverpod_user_info
+--
+CREATE TABLE "serverpod_user_info" (
+    "id" serial PRIMARY KEY,
+    "userIdentifier" text NOT NULL,
+    "userName" text NOT NULL,
+    "fullName" text,
+    "email" text,
+    "created" timestamp without time zone NOT NULL,
+    "imageUrl" text,
+    "scopeNames" json NOT NULL,
+    "blocked" boolean NOT NULL
+);
+
+-- Indexes
+CREATE UNIQUE INDEX "serverpod_user_info_user_identifier" ON "serverpod_user_info" USING btree ("userIdentifier");
+CREATE INDEX "serverpod_user_info_email" ON "serverpod_user_info" USING btree ("email");
+
+--
+-- Foreign relations for "post" table
+--
+ALTER TABLE ONLY "post"
+    ADD CONSTRAINT "post_fk_0"
+    FOREIGN KEY("userId")
+    REFERENCES "user"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
+-- Foreign relations for "user" table
+--
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT "user_fk_0"
+    FOREIGN KEY("userInfoId")
+    REFERENCES "serverpod_user_info"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
 -- Foreign relations for "serverpod_log" table
 --
 ALTER TABLE ONLY "serverpod_log"
@@ -264,9 +397,9 @@ ALTER TABLE ONLY "serverpod_query_log"
 -- MIGRATION VERSION FOR x_clone_app
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('x_clone_app', '20240201154559393', now())
+    VALUES ('x_clone_app', '20240211150415399', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20240201154559393', "timestamp" = now();
+    DO UPDATE SET "version" = '20240211150415399', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod
@@ -275,6 +408,14 @@ INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
     VALUES ('serverpod', '20240115074235544', now())
     ON CONFLICT ("module")
     DO UPDATE SET "version" = '20240115074235544', "timestamp" = now();
+
+--
+-- MIGRATION VERSION FOR serverpod_auth
+--
+INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
+    VALUES ('serverpod_auth', '20240115074239642', now())
+    ON CONFLICT ("module")
+    DO UPDATE SET "version" = '20240115074239642', "timestamp" = now();
 
 
 COMMIT;

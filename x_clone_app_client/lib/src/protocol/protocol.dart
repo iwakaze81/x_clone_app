@@ -13,11 +13,13 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'error.dart' as _i2;
 import 'example.dart' as _i3;
 import 'post.dart' as _i4;
-import 'package:x_clone_app_client/src/protocol/post.dart' as _i5;
-import 'package:serverpod_auth_client/module.dart' as _i6;
+import 'user.dart' as _i5;
+import 'package:x_clone_app_client/src/protocol/post.dart' as _i6;
+import 'package:serverpod_auth_client/module.dart' as _i7;
 export 'error.dart';
 export 'example.dart';
 export 'post.dart';
+export 'user.dart';
 export 'client.dart';
 
 class Protocol extends _i1.SerializationManager {
@@ -47,6 +49,9 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i4.Post) {
       return _i4.Post.fromJson(data, this) as T;
     }
+    if (t == _i5.User) {
+      return _i5.User.fromJson(data, this) as T;
+    }
     if (t == _i1.getType<_i2.UnauthenticatedException?>()) {
       return (data != null
           ? _i2.UnauthenticatedException.fromJson(data, this)
@@ -58,12 +63,15 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i4.Post?>()) {
       return (data != null ? _i4.Post.fromJson(data, this) : null) as T;
     }
-    if (t == List<_i5.Post>) {
-      return (data as List).map((e) => deserialize<_i5.Post>(e)).toList()
+    if (t == _i1.getType<_i5.User?>()) {
+      return (data != null ? _i5.User.fromJson(data, this) : null) as T;
+    }
+    if (t == List<_i6.Post>) {
+      return (data as List).map((e) => deserialize<_i6.Post>(e)).toList()
           as dynamic;
     }
     try {
-      return _i6.Protocol().deserialize<T>(data, t);
+      return _i7.Protocol().deserialize<T>(data, t);
     } catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -71,7 +79,7 @@ class Protocol extends _i1.SerializationManager {
   @override
   String? getClassNameForObject(Object data) {
     String? className;
-    className = _i6.Protocol().getClassNameForObject(data);
+    className = _i7.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
     }
@@ -84,6 +92,9 @@ class Protocol extends _i1.SerializationManager {
     if (data is _i4.Post) {
       return 'Post';
     }
+    if (data is _i5.User) {
+      return 'User';
+    }
     return super.getClassNameForObject(data);
   }
 
@@ -91,7 +102,7 @@ class Protocol extends _i1.SerializationManager {
   dynamic deserializeByClassName(Map<String, dynamic> data) {
     if (data['className'].startsWith('serverpod_auth.')) {
       data['className'] = data['className'].substring(15);
-      return _i6.Protocol().deserializeByClassName(data);
+      return _i7.Protocol().deserializeByClassName(data);
     }
     if (data['className'] == 'UnauthenticatedException') {
       return deserialize<_i2.UnauthenticatedException>(data['data']);
@@ -101,6 +112,9 @@ class Protocol extends _i1.SerializationManager {
     }
     if (data['className'] == 'Post') {
       return deserialize<_i4.Post>(data['data']);
+    }
+    if (data['className'] == 'User') {
+      return deserialize<_i5.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

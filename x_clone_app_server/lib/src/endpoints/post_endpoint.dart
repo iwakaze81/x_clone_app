@@ -10,11 +10,24 @@ class PostEndpoint extends Endpoint {
     return await Post.db.find(session);
   }
 
-  Future<void> createPost(Session session, Post post) async {
-    if (!await session.isUserSignedIn) {
+  Future<Post> createPost(Session session, {required String content}) async {
+    final userId = await session.auth.authenticatedUserId;
+
+    if (userId == null) {
       throw UnauthenticatedException(message: 'User not signed in.');
     }
 
-    await Post.db.insertRow(session, post);
+    final post = Post(
+      content: content,
+      createdAt: DateTime.now(),
+      userId: userId,
+    );
+
+    final result = await Post.db.insertRow(
+      session,
+      post,
+    );
+
+    return result;
   }
 }

@@ -1,5 +1,9 @@
 class: Post
 table: post
 fields:
-  body: String
+  user: User?, relation
+  content: String
   createdAt: DateTime
+indexes:
+  post_user_id_idx:
+    fields: userId

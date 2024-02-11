@@ -15,10 +15,12 @@ import 'package:serverpod_auth_server/module.dart' as _i3;
 import 'error.dart' as _i4;
 import 'example.dart' as _i5;
 import 'post.dart' as _i6;
-import 'package:x_clone_app_server/src/generated/post.dart' as _i7;
+import 'user.dart' as _i7;
+import 'package:x_clone_app_server/src/generated/post.dart' as _i8;
 export 'error.dart';
 export 'example.dart';
 export 'post.dart';
+export 'user.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -44,7 +46,13 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'nextval(\'post_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
-          name: 'body',
+          name: 'userId',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'content',
           columnType: _i2.ColumnType.text,
           isNullable: false,
           dartType: 'String',
@@ -56,7 +64,18 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'DateTime',
         ),
       ],
-      foreignKeys: [],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'post_fk_0',
+          columns: ['userId'],
+          referenceTable: 'user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
       indexes: [
         _i2.IndexDefinition(
           indexName: 'post_pkey',
@@ -70,7 +89,82 @@ class Protocol extends _i1.SerializationManagerServer {
           type: 'btree',
           isUnique: true,
           isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'post_user_id_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'userId',
+            )
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'user',
+      dartName: 'User',
+      schema: 'public',
+      module: 'x_clone_app',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'user_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userInfoId',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'user_fk_0',
+          columns: ['userInfoId'],
+          referenceTable: 'serverpod_user_info',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
         )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'user_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'user_info_id_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'userInfoId',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
       ],
       managed: true,
     ),
@@ -96,6 +190,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i6.Post) {
       return _i6.Post.fromJson(data, this) as T;
     }
+    if (t == _i7.User) {
+      return _i7.User.fromJson(data, this) as T;
+    }
     if (t == _i1.getType<_i4.UnauthenticatedException?>()) {
       return (data != null
           ? _i4.UnauthenticatedException.fromJson(data, this)
@@ -107,8 +204,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i6.Post?>()) {
       return (data != null ? _i6.Post.fromJson(data, this) : null) as T;
     }
-    if (t == List<_i7.Post>) {
-      return (data as List).map((e) => deserialize<_i7.Post>(e)).toList()
+    if (t == _i1.getType<_i7.User?>()) {
+      return (data != null ? _i7.User.fromJson(data, this) : null) as T;
+    }
+    if (t == List<_i8.Post>) {
+      return (data as List).map((e) => deserialize<_i8.Post>(e)).toList()
           as dynamic;
     }
     try {
@@ -136,6 +236,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i6.Post) {
       return 'Post';
     }
+    if (data is _i7.User) {
+      return 'User';
+    }
     return super.getClassNameForObject(data);
   }
 
@@ -153,6 +256,9 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (data['className'] == 'Post') {
       return deserialize<_i6.Post>(data['data']);
+    }
+    if (data['className'] == 'User') {
+      return deserialize<_i7.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -174,6 +280,8 @@ class Protocol extends _i1.SerializationManagerServer {
     switch (t) {
       case _i6.Post:
         return _i6.Post.t;
+      case _i7.User:
+        return _i7.User.t;
     }
     return null;
   }

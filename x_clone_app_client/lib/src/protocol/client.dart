@@ -42,10 +42,11 @@ class EndpointPost extends _i1.EndpointRef {
         {},
       );
 
-  _i2.Future<void> createPost(_i3.Post post) => caller.callServerEndpoint<void>(
+  _i2.Future<_i3.Post> createPost({required String content}) =>
+      caller.callServerEndpoint<_i3.Post>(
         'post',
         'createPost',
-        {'post': post},
+        {'content': content},
       );
 }
 

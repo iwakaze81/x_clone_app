@@ -14,6 +14,10 @@ codegen/watch:
 create/migration:
 	cd x_clone_app_server && serverpod create-migration
 
+.PHONY: create/migration/force
+create/migration/force:
+	cd x_clone_app_server && serverpod create-migration --force
+
 .PHONY: run/backend
 run/backend:
 	cd x_clone_app_server && dart bin/main.dart --apply-migrations

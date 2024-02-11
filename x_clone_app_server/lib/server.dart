@@ -31,6 +31,17 @@ void run(List<String> args) async {
   );
 
   auth.AuthConfig.set(auth.AuthConfig(
+    onUserCreated: (session, userInfo) async {
+      print('User created: ${userInfo.email}');
+      final userId = userInfo.id;
+      if (userId == null) {
+        print('User id is null');
+        // TODO: Handle error
+        return;
+      }
+
+      await User.db.insertRow(session, User(userInfoId: userId));
+    },
     sendValidationEmail: (session, email, validationCode) async {
       await Future.delayed(Duration(seconds: 1));
       print('Sending validation email to $email with code $validationCode');

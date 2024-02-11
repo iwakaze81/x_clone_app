@@ -12,11 +12,11 @@ class RootPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AutoTabsScaffold(
       routes: const [
-        HomeRoute(),
-        SearchRoute(),
-        CommunityRoute(),
-        NotificationRoute(),
-        MessageRoute(),
+        HomeTabRoute(),
+        SearchTabRoute(),
+        CommunityTabRoute(),
+        NotificationTabRoute(),
+        MessageTabRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return AppBottomNavigationBar(

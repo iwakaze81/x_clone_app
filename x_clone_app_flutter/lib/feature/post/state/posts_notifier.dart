@@ -21,9 +21,7 @@ class PostsNotifier extends AutoDisposeAsyncNotifier<List<Post>> {
     try {
       final client = singleton<ApiClient>().client;
 
-      final post = Post(body: content, createdAt: DateTime.now());
-
-      await client.post.createPost(post);
+      final post = await client.post.createPost(content: content);
 
       await update((state) {
         return state..add(post);

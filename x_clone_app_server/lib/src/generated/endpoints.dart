@@ -11,8 +11,7 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/example_endpoint.dart' as _i2;
 import '../endpoints/post_endpoint.dart' as _i3;
-import 'package:x_clone_app_server/src/generated/post.dart' as _i4;
-import 'package:serverpod_auth_server/module.dart' as _i5;
+import 'package:serverpod_auth_server/module.dart' as _i4;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -71,9 +70,9 @@ class Endpoints extends _i1.EndpointDispatch {
         'createPost': _i1.MethodConnector(
           name: 'createPost',
           params: {
-            'post': _i1.ParameterDescription(
-              name: 'post',
-              type: _i1.getType<_i4.Post>(),
+            'content': _i1.ParameterDescription(
+              name: 'content',
+              type: _i1.getType<String>(),
               nullable: false,
             )
           },
@@ -83,11 +82,11 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['post'] as _i3.PostEndpoint).createPost(
             session,
-            params['post'],
+            content: params['content'],
           ),
         ),
       },
     );
-    modules['serverpod_auth'] = _i5.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i4.Endpoints()..initializeEndpoints(server);
   }
 }

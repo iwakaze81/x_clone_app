@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:x_clone_app_flutter/feature/auth/model/email_auth.dart';
 import 'package:x_clone_app_flutter/feature/post/state/posts_notifier.dart';
+import 'package:x_clone_app_flutter/router/app_router.dart';
 
 @RoutePage()
 class HomePage extends ConsumerWidget {
@@ -37,7 +38,7 @@ class HomePage extends ConsumerWidget {
             itemBuilder: (context, index) {
               return ListTile(
                 onTap: () {},
-                title: Text(posts[index].body),
+                title: Text(posts[index].content),
                 subtitle: Text(posts[index].createdAt.toString()),
               );
             },
@@ -49,8 +50,10 @@ class HomePage extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await ref.read(postsNotifierProvider.notifier).createPost('test');
+        onPressed: () {
+          context.router.push(const PostRoute());
+
+          // await ref.read(postsNotifierProvider.notifier).createPost('test');
         },
         child: const Icon(Icons.add),
       ),

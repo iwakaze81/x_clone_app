@@ -9,73 +9,56 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import 'protocol.dart' as _i2;
-import 'package:serverpod_serialization/serverpod_serialization.dart';
+import 'package:serverpod_auth_server/module.dart' as _i2;
 
-abstract class Post extends _i1.TableRow {
-  Post._({
+abstract class User extends _i1.TableRow {
+  User._({
     int? id,
-    required this.userId,
-    this.user,
-    required this.content,
-    required this.createdAt,
+    required this.userInfoId,
+    this.userInfo,
   }) : super(id);
 
-  factory Post({
+  factory User({
     int? id,
-    required int userId,
-    _i2.User? user,
-    required String content,
-    required DateTime createdAt,
-  }) = _PostImpl;
+    required int userInfoId,
+    _i2.UserInfo? userInfo,
+  }) = _UserImpl;
 
-  factory Post.fromJson(
+  factory User.fromJson(
     Map<String, dynamic> jsonSerialization,
     _i1.SerializationManager serializationManager,
   ) {
-    return Post(
+    return User(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      userId:
-          serializationManager.deserialize<int>(jsonSerialization['userId']),
-      user: serializationManager
-          .deserialize<_i2.User?>(jsonSerialization['user']),
-      content: serializationManager
-          .deserialize<String>(jsonSerialization['content']),
-      createdAt: serializationManager
-          .deserialize<DateTime>(jsonSerialization['createdAt']),
+      userInfoId: serializationManager
+          .deserialize<int>(jsonSerialization['userInfoId']),
+      userInfo: serializationManager
+          .deserialize<_i2.UserInfo?>(jsonSerialization['userInfo']),
     );
   }
 
-  static final t = PostTable();
+  static final t = UserTable();
 
-  static const db = PostRepository._();
+  static const db = UserRepository._();
 
-  int userId;
+  int userInfoId;
 
-  _i2.User? user;
-
-  String content;
-
-  DateTime createdAt;
+  _i2.UserInfo? userInfo;
 
   @override
   _i1.Table get table => t;
 
-  Post copyWith({
+  User copyWith({
     int? id,
-    int? userId,
-    _i2.User? user,
-    String? content,
-    DateTime? createdAt,
+    int? userInfoId,
+    _i2.UserInfo? userInfo,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'userId': userId,
-      if (user != null) 'user': user?.toJson(),
-      'content': content,
-      'createdAt': createdAt.toJson(),
+      'userInfoId': userInfoId,
+      if (userInfo != null) 'userInfo': userInfo?.toJson(),
     };
   }
 
@@ -84,9 +67,7 @@ abstract class Post extends _i1.TableRow {
   Map<String, dynamic> toJsonForDatabase() {
     return {
       'id': id,
-      'userId': userId,
-      'content': content,
-      'createdAt': createdAt,
+      'userInfoId': userInfoId,
     };
   }
 
@@ -94,10 +75,8 @@ abstract class Post extends _i1.TableRow {
   Map<String, dynamic> allToJson() {
     return {
       if (id != null) 'id': id,
-      'userId': userId,
-      if (user != null) 'user': user?.allToJson(),
-      'content': content,
-      'createdAt': createdAt.toJson(),
+      'userInfoId': userInfoId,
+      if (userInfo != null) 'userInfo': userInfo?.allToJson(),
     };
   }
 
@@ -111,14 +90,8 @@ abstract class Post extends _i1.TableRow {
       case 'id':
         id = value;
         return;
-      case 'userId':
-        userId = value;
-        return;
-      case 'content':
-        content = value;
-        return;
-      case 'createdAt':
-        createdAt = value;
+      case 'userInfoId':
+        userInfoId = value;
         return;
       default:
         throw UnimplementedError();
@@ -126,9 +99,9 @@ abstract class Post extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.find instead.')
-  static Future<List<Post>> find(
+  static Future<List<User>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<PostTable>? where,
+    _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     int? offset,
     _i1.Column? orderBy,
@@ -136,10 +109,10 @@ abstract class Post extends _i1.TableRow {
     bool orderDescending = false,
     bool useCache = true,
     _i1.Transaction? transaction,
-    PostInclude? include,
+    UserInclude? include,
   }) async {
-    return session.db.find<Post>(
-      where: where != null ? where(Post.t) : null,
+    return session.db.find<User>(
+      where: where != null ? where(User.t) : null,
       limit: limit,
       offset: offset,
       orderBy: orderBy,
@@ -152,18 +125,18 @@ abstract class Post extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.findRow instead.')
-  static Future<Post?> findSingleRow(
+  static Future<User?> findSingleRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<PostTable>? where,
+    _i1.WhereExpressionBuilder<UserTable>? where,
     int? offset,
     _i1.Column? orderBy,
     bool orderDescending = false,
     bool useCache = true,
     _i1.Transaction? transaction,
-    PostInclude? include,
+    UserInclude? include,
   }) async {
-    return session.db.findSingleRow<Post>(
-      where: where != null ? where(Post.t) : null,
+    return session.db.findSingleRow<User>(
+      where: where != null ? where(User.t) : null,
       offset: offset,
       orderBy: orderBy,
       orderDescending: orderDescending,
@@ -174,12 +147,12 @@ abstract class Post extends _i1.TableRow {
   }
 
   @Deprecated('Will be removed in 2.0.0. Use: db.findById instead.')
-  static Future<Post?> findById(
+  static Future<User?> findById(
     _i1.Session session,
     int id, {
-    PostInclude? include,
+    UserInclude? include,
   }) async {
-    return session.db.findById<Post>(
+    return session.db.findById<User>(
       id,
       include: include,
     );
@@ -188,11 +161,11 @@ abstract class Post extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.deleteWhere instead.')
   static Future<int> delete(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<PostTable> where,
+    required _i1.WhereExpressionBuilder<UserTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<Post>(
-      where: where(Post.t),
+    return session.db.delete<User>(
+      where: where(User.t),
       transaction: transaction,
     );
   }
@@ -200,7 +173,7 @@ abstract class Post extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.deleteRow instead.')
   static Future<bool> deleteRow(
     _i1.Session session,
-    Post row, {
+    User row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.deleteRow(
@@ -212,7 +185,7 @@ abstract class Post extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.update instead.')
   static Future<bool> update(
     _i1.Session session,
-    Post row, {
+    User row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.update(
@@ -225,7 +198,7 @@ abstract class Post extends _i1.TableRow {
       'Will be removed in 2.0.0. Use: db.insert instead. Important note: In db.insert, the object you pass in is no longer modified, instead a new copy with the added row is returned which contains the inserted id.')
   static Future<void> insert(
     _i1.Session session,
-    Post row, {
+    User row, {
     _i1.Transaction? transaction,
   }) async {
     return session.db.insert(
@@ -237,39 +210,39 @@ abstract class Post extends _i1.TableRow {
   @Deprecated('Will be removed in 2.0.0. Use: db.count instead.')
   static Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<PostTable>? where,
+    _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     bool useCache = true,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<Post>(
-      where: where != null ? where(Post.t) : null,
+    return session.db.count<User>(
+      where: where != null ? where(User.t) : null,
       limit: limit,
       useCache: useCache,
       transaction: transaction,
     );
   }
 
-  static PostInclude include({_i2.UserInclude? user}) {
-    return PostInclude._(user: user);
+  static UserInclude include({_i2.UserInfoInclude? userInfo}) {
+    return UserInclude._(userInfo: userInfo);
   }
 
-  static PostIncludeList includeList({
-    _i1.WhereExpressionBuilder<PostTable>? where,
+  static UserIncludeList includeList({
+    _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<PostTable>? orderBy,
+    _i1.OrderByBuilder<UserTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<PostTable>? orderByList,
-    PostInclude? include,
+    _i1.OrderByListBuilder<UserTable>? orderByList,
+    UserInclude? include,
   }) {
-    return PostIncludeList._(
+    return UserIncludeList._(
       where: where,
       limit: limit,
       offset: offset,
-      orderBy: orderBy?.call(Post.t),
+      orderBy: orderBy?.call(User.t),
       orderDescending: orderDescending,
-      orderByList: orderByList?.call(Post.t),
+      orderByList: orderByList?.call(User.t),
       include: include,
     );
   }
@@ -277,113 +250,92 @@ abstract class Post extends _i1.TableRow {
 
 class _Undefined {}
 
-class _PostImpl extends Post {
-  _PostImpl({
+class _UserImpl extends User {
+  _UserImpl({
     int? id,
-    required int userId,
-    _i2.User? user,
-    required String content,
-    required DateTime createdAt,
+    required int userInfoId,
+    _i2.UserInfo? userInfo,
   }) : super._(
           id: id,
-          userId: userId,
-          user: user,
-          content: content,
-          createdAt: createdAt,
+          userInfoId: userInfoId,
+          userInfo: userInfo,
         );
 
   @override
-  Post copyWith({
+  User copyWith({
     Object? id = _Undefined,
-    int? userId,
-    Object? user = _Undefined,
-    String? content,
-    DateTime? createdAt,
+    int? userInfoId,
+    Object? userInfo = _Undefined,
   }) {
-    return Post(
+    return User(
       id: id is int? ? id : this.id,
-      userId: userId ?? this.userId,
-      user: user is _i2.User? ? user : this.user?.copyWith(),
-      content: content ?? this.content,
-      createdAt: createdAt ?? this.createdAt,
+      userInfoId: userInfoId ?? this.userInfoId,
+      userInfo:
+          userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
     );
   }
 }
 
-class PostTable extends _i1.Table {
-  PostTable({super.tableRelation}) : super(tableName: 'post') {
-    userId = _i1.ColumnInt(
-      'userId',
-      this,
-    );
-    content = _i1.ColumnString(
-      'content',
-      this,
-    );
-    createdAt = _i1.ColumnDateTime(
-      'createdAt',
+class UserTable extends _i1.Table {
+  UserTable({super.tableRelation}) : super(tableName: 'user') {
+    userInfoId = _i1.ColumnInt(
+      'userInfoId',
       this,
     );
   }
 
-  late final _i1.ColumnInt userId;
+  late final _i1.ColumnInt userInfoId;
 
-  _i2.UserTable? _user;
+  _i2.UserInfoTable? _userInfo;
 
-  late final _i1.ColumnString content;
-
-  late final _i1.ColumnDateTime createdAt;
-
-  _i2.UserTable get user {
-    if (_user != null) return _user!;
-    _user = _i1.createRelationTable(
-      relationFieldName: 'user',
-      field: Post.t.userId,
-      foreignField: _i2.User.t.id,
+  _i2.UserInfoTable get userInfo {
+    if (_userInfo != null) return _userInfo!;
+    _userInfo = _i1.createRelationTable(
+      relationFieldName: 'userInfo',
+      field: User.t.userInfoId,
+      foreignField: _i2.UserInfo.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.UserTable(tableRelation: foreignTableRelation),
+          _i2.UserInfoTable(tableRelation: foreignTableRelation),
     );
-    return _user!;
+    return _userInfo!;
   }
 
   @override
   List<_i1.Column> get columns => [
         id,
-        userId,
-        content,
-        createdAt,
+        userInfoId,
       ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
-    if (relationField == 'user') {
-      return user;
+    if (relationField == 'userInfo') {
+      return userInfo;
     }
     return null;
   }
 }
 
-@Deprecated('Use PostTable.t instead.')
-PostTable tPost = PostTable();
+@Deprecated('Use UserTable.t instead.')
+UserTable tUser = UserTable();
 
-class PostInclude extends _i1.IncludeObject {
-  PostInclude._({_i2.UserInclude? user}) {
-    _user = user;
+class UserInclude extends _i1.IncludeObject {
+  UserInclude._({_i2.UserInfoInclude? userInfo}) {
+    _userInfo = userInfo;
   }
 
-  _i2.UserInclude? _user;
+  _i2.UserInfoInclude? _userInfo;
 
   @override
-  Map<String, _i1.Include?> get includes => {'user': _user};
+  Map<String, _i1.Include?> get includes => {'userInfo': _userInfo};
 
   @override
-  _i1.Table get table => Post.t;
+  _i1.Table get table => User.t;
 }
 
-class PostIncludeList extends _i1.IncludeList {
-  PostIncludeList._({
-    _i1.WhereExpressionBuilder<PostTable>? where,
+class UserIncludeList extends _i1.IncludeList {
+  UserIncludeList._({
+    _i1.WhereExpressionBuilder<UserTable>? where,
     super.limit,
     super.offset,
     super.orderBy,
@@ -391,36 +343,36 @@ class PostIncludeList extends _i1.IncludeList {
     super.orderByList,
     super.include,
   }) {
-    super.where = where?.call(Post.t);
+    super.where = where?.call(User.t);
   }
 
   @override
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table get table => Post.t;
+  _i1.Table get table => User.t;
 }
 
-class PostRepository {
-  const PostRepository._();
+class UserRepository {
+  const UserRepository._();
 
-  final attachRow = const PostAttachRowRepository._();
+  final attachRow = const UserAttachRowRepository._();
 
-  Future<List<Post>> find(
+  Future<List<User>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<PostTable>? where,
+    _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<PostTable>? orderBy,
+    _i1.OrderByBuilder<UserTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<PostTable>? orderByList,
+    _i1.OrderByListBuilder<UserTable>? orderByList,
     _i1.Transaction? transaction,
-    PostInclude? include,
+    UserInclude? include,
   }) async {
-    return session.dbNext.find<Post>(
-      where: where?.call(Post.t),
-      orderBy: orderBy?.call(Post.t),
-      orderByList: orderByList?.call(Post.t),
+    return session.dbNext.find<User>(
+      where: where?.call(User.t),
+      orderBy: orderBy?.call(User.t),
+      orderByList: orderByList?.call(User.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
@@ -429,20 +381,20 @@ class PostRepository {
     );
   }
 
-  Future<Post?> findFirstRow(
+  Future<User?> findFirstRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<PostTable>? where,
+    _i1.WhereExpressionBuilder<UserTable>? where,
     int? offset,
-    _i1.OrderByBuilder<PostTable>? orderBy,
+    _i1.OrderByBuilder<UserTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<PostTable>? orderByList,
+    _i1.OrderByListBuilder<UserTable>? orderByList,
     _i1.Transaction? transaction,
-    PostInclude? include,
+    UserInclude? include,
   }) async {
-    return session.dbNext.findFirstRow<Post>(
-      where: where?.call(Post.t),
-      orderBy: orderBy?.call(Post.t),
-      orderByList: orderByList?.call(Post.t),
+    return session.dbNext.findFirstRow<User>(
+      where: where?.call(User.t),
+      orderBy: orderBy?.call(User.t),
+      orderByList: orderByList?.call(User.t),
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
@@ -450,73 +402,73 @@ class PostRepository {
     );
   }
 
-  Future<Post?> findById(
+  Future<User?> findById(
     _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
-    PostInclude? include,
+    UserInclude? include,
   }) async {
-    return session.dbNext.findById<Post>(
+    return session.dbNext.findById<User>(
       id,
       transaction: transaction,
       include: include,
     );
   }
 
-  Future<List<Post>> insert(
+  Future<List<User>> insert(
     _i1.Session session,
-    List<Post> rows, {
+    List<User> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insert<Post>(
+    return session.dbNext.insert<User>(
       rows,
       transaction: transaction,
     );
   }
 
-  Future<Post> insertRow(
+  Future<User> insertRow(
     _i1.Session session,
-    Post row, {
+    User row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.insertRow<Post>(
+    return session.dbNext.insertRow<User>(
       row,
       transaction: transaction,
     );
   }
 
-  Future<List<Post>> update(
+  Future<List<User>> update(
     _i1.Session session,
-    List<Post> rows, {
-    _i1.ColumnSelections<PostTable>? columns,
+    List<User> rows, {
+    _i1.ColumnSelections<UserTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.update<Post>(
+    return session.dbNext.update<User>(
       rows,
-      columns: columns?.call(Post.t),
+      columns: columns?.call(User.t),
       transaction: transaction,
     );
   }
 
-  Future<Post> updateRow(
+  Future<User> updateRow(
     _i1.Session session,
-    Post row, {
-    _i1.ColumnSelections<PostTable>? columns,
+    User row, {
+    _i1.ColumnSelections<UserTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.updateRow<Post>(
+    return session.dbNext.updateRow<User>(
       row,
-      columns: columns?.call(Post.t),
+      columns: columns?.call(User.t),
       transaction: transaction,
     );
   }
 
   Future<List<int>> delete(
     _i1.Session session,
-    List<Post> rows, {
+    List<User> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.delete<Post>(
+    return session.dbNext.delete<User>(
       rows,
       transaction: transaction,
     );
@@ -524,10 +476,10 @@ class PostRepository {
 
   Future<int> deleteRow(
     _i1.Session session,
-    Post row, {
+    User row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteRow<Post>(
+    return session.dbNext.deleteRow<User>(
       row,
       transaction: transaction,
     );
@@ -535,48 +487,48 @@ class PostRepository {
 
   Future<List<int>> deleteWhere(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<PostTable> where,
+    required _i1.WhereExpressionBuilder<UserTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.deleteWhere<Post>(
-      where: where(Post.t),
+    return session.dbNext.deleteWhere<User>(
+      where: where(User.t),
       transaction: transaction,
     );
   }
 
   Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<PostTable>? where,
+    _i1.WhereExpressionBuilder<UserTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.dbNext.count<Post>(
-      where: where?.call(Post.t),
+    return session.dbNext.count<User>(
+      where: where?.call(User.t),
       limit: limit,
       transaction: transaction,
     );
   }
 }
 
-class PostAttachRowRepository {
-  const PostAttachRowRepository._();
+class UserAttachRowRepository {
+  const UserAttachRowRepository._();
 
-  Future<void> user(
+  Future<void> userInfo(
     _i1.Session session,
-    Post post,
-    _i2.User user,
+    User user,
+    _i2.UserInfo userInfo,
   ) async {
-    if (post.id == null) {
-      throw ArgumentError.notNull('post.id');
-    }
     if (user.id == null) {
       throw ArgumentError.notNull('user.id');
     }
+    if (userInfo.id == null) {
+      throw ArgumentError.notNull('userInfo.id');
+    }
 
-    var $post = post.copyWith(userId: user.id);
-    await session.dbNext.updateRow<Post>(
-      $post,
-      columns: [Post.t.userId],
+    var $user = user.copyWith(userInfoId: userInfo.id);
+    await session.dbNext.updateRow<User>(
+      $user,
+      columns: [User.t.userInfoId],
     );
   }
 }
