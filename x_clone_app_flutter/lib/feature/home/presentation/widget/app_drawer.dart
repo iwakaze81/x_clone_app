@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:x_clone_app_flutter/feature/auth/presentation/widget/my_avatar.dart';
 import 'package:x_clone_app_flutter/feature/auth/state/session.dart';
 import 'package:x_clone_app_flutter/router/app_router.dart';
 
@@ -48,9 +49,7 @@ class _UserInfo extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const CircleAvatar(
-                radius: 18,
-              ),
+              const MyAvatar(),
               SizedBox(
                 height: 24,
                 width: 24,

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:x_clone_app_flutter/feature/home/presentation/widget/app_drawer.dart';
+import 'package:x_clone_app_flutter/feature/auth/presentation/widget/my_avatar.dart';
 import 'package:x_clone_app_flutter/feature/post/presentation/widget/post_list.dart';
 import 'package:x_clone_app_flutter/feature/post/state/posts_notifier.dart';
 import 'package:x_clone_app_flutter/router/app_router.dart';
@@ -22,9 +22,7 @@ class HomePage extends ConsumerWidget {
             onTap: () {
               Scaffold.of(context).openDrawer();
             },
-            child: const CircleAvatar(
-              radius: 18,
-            ),
+            child: const MyAvatar(),
           ),
         ),
         centerTitle: true,
