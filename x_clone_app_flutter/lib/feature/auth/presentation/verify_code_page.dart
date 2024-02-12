@@ -4,6 +4,7 @@ import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:x_clone_app_flutter/feature/auth/model/email_auth.dart';
 import 'package:x_clone_app_flutter/router/app_router.dart';
+import 'package:x_clone_app_flutter/utility_widgets/app_logo.dart';
 
 @RoutePage()
 class VerificationCodePage extends ConsumerWidget {
@@ -21,7 +22,7 @@ class VerificationCodePage extends ConsumerWidget {
         ),
         title: const Hero(
           tag: 'app_logo',
-          child: FlutterLogo(size: 32),
+          child: AppLogo(),
         ),
       ),
       body: Column(

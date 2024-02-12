@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:x_clone_app_flutter/feature/home/presentation/widget/app_drawer.dart';
 import 'package:x_clone_app_flutter/feature/root/presentation/widget/app_bottom_navigation_bar.dart';
 import 'package:x_clone_app_flutter/router/app_router.dart';
 
@@ -18,6 +19,7 @@ class RootPage extends ConsumerWidget {
         NotificationTabRoute(),
         MessageTabRoute(),
       ],
+      drawer: const AppDrawer(),
       bottomNavigationBuilder: (_, tabsRouter) {
         return AppBottomNavigationBar(
           currentIndex: tabsRouter.activeIndex,

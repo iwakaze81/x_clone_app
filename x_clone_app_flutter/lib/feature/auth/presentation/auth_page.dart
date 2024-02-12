@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:x_clone_app_flutter/router/app_router.dart';
+import 'package:x_clone_app_flutter/utility_widgets/app_logo.dart';
 import 'package:x_clone_app_flutter/utility_widgets/divider_with_text.dart';
 
 @RoutePage()
@@ -21,7 +22,7 @@ class AuthPage extends HookConsumerWidget {
             children: [
               const Hero(
                 tag: 'app_logo',
-                child: FlutterLogo(size: 32),
+                child: AppLogo(),
               ),
               Text(
                 '今、運命の一瞬を彩る魔法を\n見つけよう。',

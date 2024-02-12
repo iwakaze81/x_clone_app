@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:x_clone_app_flutter/feature/auth/model/email_auth.dart';
+import 'package:x_clone_app_flutter/feature/home/presentation/widget/app_drawer.dart';
+import 'package:x_clone_app_flutter/feature/post/presentation/widget/post_list.dart';
 import 'package:x_clone_app_flutter/feature/post/state/posts_notifier.dart';
 import 'package:x_clone_app_flutter/router/app_router.dart';
+import 'package:x_clone_app_flutter/utility_widgets/app_logo.dart';
 
 @RoutePage()
 class HomePage extends ConsumerWidget {
@@ -15,35 +17,21 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Serverpod Example'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              ref.read(emailAuthProvider).logout();
+        leading: Center(
+          child: GestureDetector(
+            onTap: () {
+              Scaffold.of(context).openDrawer();
             },
+            child: const CircleAvatar(
+              radius: 18,
+            ),
           ),
-        ],
+        ),
+        centerTitle: true,
+        title: const AppLogo(),
       ),
       body: posts.when(
-        data: (posts) {
-          if (posts.isEmpty) {
-            return const Center(
-              child: Text('ポストはありません'),
-            );
-          }
-
-          return ListView.builder(
-            itemCount: posts.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {},
-                title: Text(posts[index].content),
-                subtitle: Text(posts[index].createdAt.toString()),
-              );
-            },
-          );
-        },
+        data: (posts) => PostList(posts: posts),
         error: (e, s) => Text('error $e'),
         loading: () => const Center(
           child: CircularProgressIndicator.adaptive(),
@@ -52,8 +40,6 @@ class HomePage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.router.push(const PostRoute());
-
-          // await ref.read(postsNotifierProvider.notifier).createPost('test');
         },
         child: const Icon(Icons.add),
       ),
