@@ -24,6 +24,7 @@ class MyApp extends ConsumerWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
         appBarTheme: const AppBarTheme(centerTitle: true),
+        splashFactory: NoSplash.splashFactory,
       ),
       routerConfig: appRouter.config(),
     );
