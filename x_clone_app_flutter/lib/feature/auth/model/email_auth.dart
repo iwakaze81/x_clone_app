@@ -79,17 +79,4 @@ class EmailAuth {
 
     return signInUser != null;
   }
-
-  Future<bool> logout() async {
-    final result = await singleton<ApiClient>().sessionManager.signOut();
-
-    if (result) {
-      await _secureStorage.delete(key: SecureStorageKey.email);
-      await _secureStorage.delete(key: SecureStorageKey.password);
-    }
-
-    _sessionNotifier.updateSession();
-
-    return result;
-  }
 }
