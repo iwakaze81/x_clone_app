@@ -1,4 +1,5 @@
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/module.dart';
 import 'package:x_clone_app_server/src/generated/protocol.dart';
 
 class PostEndpoint extends Endpoint {
@@ -7,7 +8,10 @@ class PostEndpoint extends Endpoint {
       throw UnauthenticatedException(message: 'User not signed in.');
     }
 
-    return await Post.db.find(session);
+    return await Post.db.find(
+      session,
+      include: Post.include(user: User.include(userInfo: UserInfo.include())),
+    );
   }
 
   Future<Post> createPost(Session session, {required String content}) async {
