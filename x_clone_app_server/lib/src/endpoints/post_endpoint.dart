@@ -10,6 +10,8 @@ class PostEndpoint extends Endpoint {
 
     return await Post.db.find(
       session,
+      orderBy: (post) => post.createdAt,
+      orderDescending: true,
       include: Post.include(user: User.include(userInfo: UserInfo.include())),
     );
   }
