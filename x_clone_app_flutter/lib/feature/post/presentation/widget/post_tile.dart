@@ -45,19 +45,11 @@ class PostTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              post.user?.userInfo?.userName ?? 'ユーザー名',
+                              post.user?.userInfo?.userName ?? '名無し',
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall
                                   ?.copyWith(fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              '@${post.user?.userInfo?.userName ?? 'ユーザー名'}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(height: 20 / 12),
                             ),
                             Text(
                               '・$postedAt',
