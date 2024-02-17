@@ -1,0 +1,6 @@
+class: FavoritePost
+table: favorite_post
+fields:
+  post: Post?, relation
+  user: module:auth:UserInfo?, relation
+

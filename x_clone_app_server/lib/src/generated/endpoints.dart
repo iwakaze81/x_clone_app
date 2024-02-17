@@ -10,8 +10,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/example_endpoint.dart' as _i2;
-import '../endpoints/post_endpoint.dart' as _i3;
-import 'package:serverpod_auth_server/module.dart' as _i4;
+import '../endpoints/favorite_post_endpoint.dart' as _i3;
+import '../endpoints/post_endpoint.dart' as _i4;
+import 'package:serverpod_auth_server/module.dart' as _i5;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -23,7 +24,13 @@ class Endpoints extends _i1.EndpointDispatch {
           'example',
           null,
         ),
-      'post': _i3.PostEndpoint()
+      'favoritePost': _i3.FavoritePostEndpoint()
+        ..initialize(
+          server,
+          'favoritePost',
+          null,
+        ),
+      'post': _i4.PostEndpoint()
         ..initialize(
           server,
           'post',
@@ -54,6 +61,69 @@ class Endpoints extends _i1.EndpointDispatch {
         )
       },
     );
+    connectors['favoritePost'] = _i1.EndpointConnector(
+      name: 'favoritePost',
+      endpoint: endpoints['favoritePost']!,
+      methodConnectors: {
+        'getFavoriteCount': _i1.MethodConnector(
+          name: 'getFavoriteCount',
+          params: {
+            'postId': _i1.ParameterDescription(
+              name: 'postId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['favoritePost'] as _i3.FavoritePostEndpoint)
+                  .getFavoriteCount(
+            session,
+            params['postId'],
+          ),
+        ),
+        'isFavorite': _i1.MethodConnector(
+          name: 'isFavorite',
+          params: {
+            'postId': _i1.ParameterDescription(
+              name: 'postId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['favoritePost'] as _i3.FavoritePostEndpoint)
+                  .isFavorite(
+            session,
+            params['postId'],
+          ),
+        ),
+        'toggleFavorite': _i1.MethodConnector(
+          name: 'toggleFavorite',
+          params: {
+            'postId': _i1.ParameterDescription(
+              name: 'postId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['favoritePost'] as _i3.FavoritePostEndpoint)
+                  .toggleFavorite(
+            session,
+            params['postId'],
+          ),
+        ),
+      },
+    );
     connectors['post'] = _i1.EndpointConnector(
       name: 'post',
       endpoint: endpoints['post']!,
@@ -65,7 +135,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['post'] as _i3.PostEndpoint).getPosts(session),
+              (endpoints['post'] as _i4.PostEndpoint).getPosts(session),
         ),
         'createPost': _i1.MethodConnector(
           name: 'createPost',
@@ -80,13 +150,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['post'] as _i3.PostEndpoint).createPost(
+              (endpoints['post'] as _i4.PostEndpoint).createPost(
             session,
             content: params['content'],
           ),
         ),
       },
     );
-    modules['serverpod_auth'] = _i4.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i5.Endpoints()..initializeEndpoints(server);
   }
 }

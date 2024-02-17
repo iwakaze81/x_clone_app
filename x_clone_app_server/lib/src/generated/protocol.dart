@@ -14,11 +14,13 @@ import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/module.dart' as _i3;
 import 'error.dart' as _i4;
 import 'example.dart' as _i5;
-import 'post.dart' as _i6;
-import 'user.dart' as _i7;
-import 'package:x_clone_app_server/src/generated/post.dart' as _i8;
+import 'favorite_post.dart' as _i6;
+import 'post.dart' as _i7;
+import 'user.dart' as _i8;
+import 'package:x_clone_app_server/src/generated/post.dart' as _i9;
 export 'error.dart';
 export 'example.dart';
+export 'favorite_post.dart';
 export 'post.dart';
 export 'user.dart';
 
@@ -33,6 +35,71 @@ class Protocol extends _i1.SerializationManagerServer {
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
     _i2.TableDefinition(
+      name: 'favorite_post',
+      dartName: 'FavoritePost',
+      schema: 'public',
+      module: 'x_clone_app',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'favorite_post_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'postId',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'favorite_post_fk_0',
+          columns: ['postId'],
+          referenceTable: 'post',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'favorite_post_fk_1',
+          columns: ['userId'],
+          referenceTable: 'serverpod_user_info',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'favorite_post_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
       name: 'post',
       dartName: 'Post',
       schema: 'public',
@@ -46,7 +113,7 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'nextval(\'post_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
-          name: 'userId',
+          name: 'userInfoId',
           columnType: _i2.ColumnType.integer,
           isNullable: false,
           dartType: 'int',
@@ -67,8 +134,8 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [
         _i2.ForeignKeyDefinition(
           constraintName: 'post_fk_0',
-          columns: ['userId'],
-          referenceTable: 'user',
+          columns: ['userInfoId'],
+          referenceTable: 'serverpod_user_info',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: _i2.ForeignKeyAction.noAction,
@@ -174,11 +241,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i5.Example) {
       return _i5.Example.fromJson(data, this) as T;
     }
-    if (t == _i6.Post) {
-      return _i6.Post.fromJson(data, this) as T;
+    if (t == _i6.FavoritePost) {
+      return _i6.FavoritePost.fromJson(data, this) as T;
     }
-    if (t == _i7.User) {
-      return _i7.User.fromJson(data, this) as T;
+    if (t == _i7.Post) {
+      return _i7.Post.fromJson(data, this) as T;
+    }
+    if (t == _i8.User) {
+      return _i8.User.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i4.UnauthenticatedException?>()) {
       return (data != null
@@ -188,14 +258,17 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i5.Example?>()) {
       return (data != null ? _i5.Example.fromJson(data, this) : null) as T;
     }
-    if (t == _i1.getType<_i6.Post?>()) {
-      return (data != null ? _i6.Post.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i6.FavoritePost?>()) {
+      return (data != null ? _i6.FavoritePost.fromJson(data, this) : null) as T;
     }
-    if (t == _i1.getType<_i7.User?>()) {
-      return (data != null ? _i7.User.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i7.Post?>()) {
+      return (data != null ? _i7.Post.fromJson(data, this) : null) as T;
     }
-    if (t == List<_i8.Post>) {
-      return (data as List).map((e) => deserialize<_i8.Post>(e)).toList()
+    if (t == _i1.getType<_i8.User?>()) {
+      return (data != null ? _i8.User.fromJson(data, this) : null) as T;
+    }
+    if (t == List<_i9.Post>) {
+      return (data as List).map((e) => deserialize<_i9.Post>(e)).toList()
           as dynamic;
     }
     try {
@@ -220,10 +293,13 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i5.Example) {
       return 'Example';
     }
-    if (data is _i6.Post) {
+    if (data is _i6.FavoritePost) {
+      return 'FavoritePost';
+    }
+    if (data is _i7.Post) {
       return 'Post';
     }
-    if (data is _i7.User) {
+    if (data is _i8.User) {
       return 'User';
     }
     return super.getClassNameForObject(data);
@@ -241,11 +317,14 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'Example') {
       return deserialize<_i5.Example>(data['data']);
     }
+    if (data['className'] == 'FavoritePost') {
+      return deserialize<_i6.FavoritePost>(data['data']);
+    }
     if (data['className'] == 'Post') {
-      return deserialize<_i6.Post>(data['data']);
+      return deserialize<_i7.Post>(data['data']);
     }
     if (data['className'] == 'User') {
-      return deserialize<_i7.User>(data['data']);
+      return deserialize<_i8.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -265,10 +344,12 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i6.Post:
-        return _i6.Post.t;
-      case _i7.User:
-        return _i7.User.t;
+      case _i6.FavoritePost:
+        return _i6.FavoritePost.t;
+      case _i7.Post:
+        return _i7.Post.t;
+      case _i8.User:
+        return _i8.User.t;
     }
     return null;
   }

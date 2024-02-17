@@ -1,5 +1,9 @@
 example:
   - hello:
+favoritePost:
+  - getFavoriteCount:
+  - isFavorite:
+  - toggleFavorite:
 post:
   - getPosts:
   - createPost:

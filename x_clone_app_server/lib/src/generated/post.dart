@@ -9,22 +9,22 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import 'protocol.dart' as _i2;
+import 'package:serverpod_auth_server/module.dart' as _i2;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class Post extends _i1.TableRow {
   Post._({
     int? id,
-    required this.userId,
-    this.user,
+    required this.userInfoId,
+    this.userInfo,
     required this.content,
     required this.createdAt,
   }) : super(id);
 
   factory Post({
     int? id,
-    required int userId,
-    _i2.User? user,
+    required int userInfoId,
+    _i2.UserInfo? userInfo,
     required String content,
     required DateTime createdAt,
   }) = _PostImpl;
@@ -35,10 +35,10 @@ abstract class Post extends _i1.TableRow {
   ) {
     return Post(
       id: serializationManager.deserialize<int?>(jsonSerialization['id']),
-      userId:
-          serializationManager.deserialize<int>(jsonSerialization['userId']),
-      user: serializationManager
-          .deserialize<_i2.User?>(jsonSerialization['user']),
+      userInfoId: serializationManager
+          .deserialize<int>(jsonSerialization['userInfoId']),
+      userInfo: serializationManager
+          .deserialize<_i2.UserInfo?>(jsonSerialization['userInfo']),
       content: serializationManager
           .deserialize<String>(jsonSerialization['content']),
       createdAt: serializationManager
@@ -50,9 +50,9 @@ abstract class Post extends _i1.TableRow {
 
   static const db = PostRepository._();
 
-  int userId;
+  int userInfoId;
 
-  _i2.User? user;
+  _i2.UserInfo? userInfo;
 
   String content;
 
@@ -63,8 +63,8 @@ abstract class Post extends _i1.TableRow {
 
   Post copyWith({
     int? id,
-    int? userId,
-    _i2.User? user,
+    int? userInfoId,
+    _i2.UserInfo? userInfo,
     String? content,
     DateTime? createdAt,
   });
@@ -72,8 +72,8 @@ abstract class Post extends _i1.TableRow {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'userId': userId,
-      if (user != null) 'user': user?.toJson(),
+      'userInfoId': userInfoId,
+      if (userInfo != null) 'userInfo': userInfo?.toJson(),
       'content': content,
       'createdAt': createdAt.toJson(),
     };
@@ -84,7 +84,7 @@ abstract class Post extends _i1.TableRow {
   Map<String, dynamic> toJsonForDatabase() {
     return {
       'id': id,
-      'userId': userId,
+      'userInfoId': userInfoId,
       'content': content,
       'createdAt': createdAt,
     };
@@ -94,8 +94,8 @@ abstract class Post extends _i1.TableRow {
   Map<String, dynamic> allToJson() {
     return {
       if (id != null) 'id': id,
-      'userId': userId,
-      if (user != null) 'user': user?.allToJson(),
+      'userInfoId': userInfoId,
+      if (userInfo != null) 'userInfo': userInfo?.allToJson(),
       'content': content,
       'createdAt': createdAt.toJson(),
     };
@@ -111,8 +111,8 @@ abstract class Post extends _i1.TableRow {
       case 'id':
         id = value;
         return;
-      case 'userId':
-        userId = value;
+      case 'userInfoId':
+        userInfoId = value;
         return;
       case 'content':
         content = value;
@@ -250,8 +250,8 @@ abstract class Post extends _i1.TableRow {
     );
   }
 
-  static PostInclude include({_i2.UserInclude? user}) {
-    return PostInclude._(user: user);
+  static PostInclude include({_i2.UserInfoInclude? userInfo}) {
+    return PostInclude._(userInfo: userInfo);
   }
 
   static PostIncludeList includeList({
@@ -280,14 +280,14 @@ class _Undefined {}
 class _PostImpl extends Post {
   _PostImpl({
     int? id,
-    required int userId,
-    _i2.User? user,
+    required int userInfoId,
+    _i2.UserInfo? userInfo,
     required String content,
     required DateTime createdAt,
   }) : super._(
           id: id,
-          userId: userId,
-          user: user,
+          userInfoId: userInfoId,
+          userInfo: userInfo,
           content: content,
           createdAt: createdAt,
         );
@@ -295,15 +295,16 @@ class _PostImpl extends Post {
   @override
   Post copyWith({
     Object? id = _Undefined,
-    int? userId,
-    Object? user = _Undefined,
+    int? userInfoId,
+    Object? userInfo = _Undefined,
     String? content,
     DateTime? createdAt,
   }) {
     return Post(
       id: id is int? ? id : this.id,
-      userId: userId ?? this.userId,
-      user: user is _i2.User? ? user : this.user?.copyWith(),
+      userInfoId: userInfoId ?? this.userInfoId,
+      userInfo:
+          userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
       content: content ?? this.content,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -312,8 +313,8 @@ class _PostImpl extends Post {
 
 class PostTable extends _i1.Table {
   PostTable({super.tableRelation}) : super(tableName: 'post') {
-    userId = _i1.ColumnInt(
-      'userId',
+    userInfoId = _i1.ColumnInt(
+      'userInfoId',
       this,
     );
     content = _i1.ColumnString(
@@ -326,39 +327,39 @@ class PostTable extends _i1.Table {
     );
   }
 
-  late final _i1.ColumnInt userId;
+  late final _i1.ColumnInt userInfoId;
 
-  _i2.UserTable? _user;
+  _i2.UserInfoTable? _userInfo;
 
   late final _i1.ColumnString content;
 
   late final _i1.ColumnDateTime createdAt;
 
-  _i2.UserTable get user {
-    if (_user != null) return _user!;
-    _user = _i1.createRelationTable(
-      relationFieldName: 'user',
-      field: Post.t.userId,
-      foreignField: _i2.User.t.id,
+  _i2.UserInfoTable get userInfo {
+    if (_userInfo != null) return _userInfo!;
+    _userInfo = _i1.createRelationTable(
+      relationFieldName: 'userInfo',
+      field: Post.t.userInfoId,
+      foreignField: _i2.UserInfo.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.UserTable(tableRelation: foreignTableRelation),
+          _i2.UserInfoTable(tableRelation: foreignTableRelation),
     );
-    return _user!;
+    return _userInfo!;
   }
 
   @override
   List<_i1.Column> get columns => [
         id,
-        userId,
+        userInfoId,
         content,
         createdAt,
       ];
 
   @override
   _i1.Table? getRelationTable(String relationField) {
-    if (relationField == 'user') {
-      return user;
+    if (relationField == 'userInfo') {
+      return userInfo;
     }
     return null;
   }
@@ -368,14 +369,14 @@ class PostTable extends _i1.Table {
 PostTable tPost = PostTable();
 
 class PostInclude extends _i1.IncludeObject {
-  PostInclude._({_i2.UserInclude? user}) {
-    _user = user;
+  PostInclude._({_i2.UserInfoInclude? userInfo}) {
+    _userInfo = userInfo;
   }
 
-  _i2.UserInclude? _user;
+  _i2.UserInfoInclude? _userInfo;
 
   @override
-  Map<String, _i1.Include?> get includes => {'user': _user};
+  Map<String, _i1.Include?> get includes => {'userInfo': _userInfo};
 
   @override
   _i1.Table get table => Post.t;
@@ -561,22 +562,22 @@ class PostRepository {
 class PostAttachRowRepository {
   const PostAttachRowRepository._();
 
-  Future<void> user(
+  Future<void> userInfo(
     _i1.Session session,
     Post post,
-    _i2.User user,
+    _i2.UserInfo userInfo,
   ) async {
     if (post.id == null) {
       throw ArgumentError.notNull('post.id');
     }
-    if (user.id == null) {
-      throw ArgumentError.notNull('user.id');
+    if (userInfo.id == null) {
+      throw ArgumentError.notNull('userInfo.id');
     }
 
-    var $post = post.copyWith(userId: user.id);
+    var $post = post.copyWith(userInfoId: userInfo.id);
     await session.dbNext.updateRow<Post>(
       $post,
-      columns: [Post.t.userId],
+      columns: [Post.t.userInfoId],
     );
   }
 }

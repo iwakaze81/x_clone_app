@@ -1,6 +1,6 @@
 class: Post
 table: post
 fields:
-  user: User?, relation
+  userInfo: module:auth:UserInfo?, relation
   content: String
   createdAt: DateTime

@@ -29,6 +29,34 @@ class EndpointExample extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointFavoritePost extends _i1.EndpointRef {
+  EndpointFavoritePost(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'favoritePost';
+
+  _i2.Future<int> getFavoriteCount(int postId) =>
+      caller.callServerEndpoint<int>(
+        'favoritePost',
+        'getFavoriteCount',
+        {'postId': postId},
+      );
+
+  _i2.Future<bool> isFavorite(int postId) => caller.callServerEndpoint<bool>(
+        'favoritePost',
+        'isFavorite',
+        {'postId': postId},
+      );
+
+  _i2.Future<bool> toggleFavorite(int postId) =>
+      caller.callServerEndpoint<bool>(
+        'favoritePost',
+        'toggleFavorite',
+        {'postId': postId},
+      );
+}
+
+/// {@category Endpoint}
 class EndpointPost extends _i1.EndpointRef {
   EndpointPost(_i1.EndpointCaller caller) : super(caller);
 
@@ -74,11 +102,14 @@ class Client extends _i1.ServerpodClient {
           connectionTimeout: connectionTimeout,
         ) {
     example = EndpointExample(this);
+    favoritePost = EndpointFavoritePost(this);
     post = EndpointPost(this);
     modules = _Modules(this);
   }
 
   late final EndpointExample example;
+
+  late final EndpointFavoritePost favoritePost;
 
   late final EndpointPost post;
 
@@ -87,6 +118,7 @@ class Client extends _i1.ServerpodClient {
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
         'example': example,
+        'favoritePost': favoritePost,
         'post': post,
       };
 

@@ -22,6 +22,10 @@ create/migration/force:
 run/backend:
 	cd x_clone_app_server && dart bin/main.dart --apply-migrations
 
+.PHONY: stop/backend
+stop/backend:
+	cd x_clone_app_server && docker compose down
+
 .PHONY: run/pub_get
 run/pub_get:
 	cd x_clone_app_flutter && fvm flutter pub get; \

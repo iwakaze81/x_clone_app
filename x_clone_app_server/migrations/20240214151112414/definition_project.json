@@ -2,6 +2,76 @@
   "moduleName": "x_clone_app",
   "tables": [
     {
+      "name": "favorite_post",
+      "dartName": "FavoritePost",
+      "module": "x_clone_app",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 2,
+          "isNullable": false,
+          "columnDefault": "nextval('favorite_post_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "postId",
+          "columnType": 2,
+          "isNullable": false,
+          "dartType": "int"
+        },
+        {
+          "name": "userId",
+          "columnType": 2,
+          "isNullable": false,
+          "dartType": "int"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "favorite_post_fk_0",
+          "columns": [
+            "postId"
+          ],
+          "referenceTable": "post",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        },
+        {
+          "constraintName": "favorite_post_fk_1",
+          "columns": [
+            "userId"
+          ],
+          "referenceTable": "serverpod_user_info",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "favorite_post_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
       "name": "post",
       "dartName": "Post",
       "module": "x_clone_app",
@@ -15,7 +85,7 @@
           "dartType": "int?"
         },
         {
-          "name": "userId",
+          "name": "userInfoId",
           "columnType": 2,
           "isNullable": false,
           "dartType": "int"
@@ -37,9 +107,9 @@
         {
           "constraintName": "post_fk_0",
           "columns": [
-            "userId"
+            "userInfoId"
           ],
-          "referenceTable": "user",
+          "referenceTable": "serverpod_user_info",
           "referenceTableSchema": "public",
           "referenceColumns": [
             "id"
@@ -60,18 +130,6 @@
           "type": "btree",
           "isUnique": true,
           "isPrimary": true
-        },
-        {
-          "indexName": "post_user_id_unique_idx",
-          "elements": [
-            {
-              "type": 0,
-              "definition": "userId"
-            }
-          ],
-          "type": "btree",
-          "isUnique": true,
-          "isPrimary": false
         }
       ],
       "managed": true
@@ -148,10 +206,6 @@
     {
       "module": "serverpod_auth",
       "version": "20240115074239642"
-    },
-    {
-      "module": "x_clone_app",
-      "version": "20240208153034618"
     }
   ],
   "migrationApiVersion": 1

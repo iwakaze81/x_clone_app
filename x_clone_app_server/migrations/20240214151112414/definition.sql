@@ -1,17 +1,23 @@
 BEGIN;
 
 --
+-- Class FavoritePost as table favorite_post
+--
+CREATE TABLE "favorite_post" (
+    "id" serial PRIMARY KEY,
+    "postId" integer NOT NULL,
+    "userId" integer NOT NULL
+);
+
+--
 -- Class Post as table post
 --
 CREATE TABLE "post" (
     "id" serial PRIMARY KEY,
-    "userId" integer NOT NULL,
+    "userInfoId" integer NOT NULL,
     "content" text NOT NULL,
     "createdAt" timestamp without time zone NOT NULL
 );
-
--- Indexes
-CREATE UNIQUE INDEX "post_user_id_unique_idx" ON "post" USING btree ("userId");
 
 --
 -- Class User as table user
@@ -343,12 +349,28 @@ CREATE UNIQUE INDEX "serverpod_user_info_user_identifier" ON "serverpod_user_inf
 CREATE INDEX "serverpod_user_info_email" ON "serverpod_user_info" USING btree ("email");
 
 --
+-- Foreign relations for "favorite_post" table
+--
+ALTER TABLE ONLY "favorite_post"
+    ADD CONSTRAINT "favorite_post_fk_0"
+    FOREIGN KEY("postId")
+    REFERENCES "post"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+ALTER TABLE ONLY "favorite_post"
+    ADD CONSTRAINT "favorite_post_fk_1"
+    FOREIGN KEY("userId")
+    REFERENCES "serverpod_user_info"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
 -- Foreign relations for "post" table
 --
 ALTER TABLE ONLY "post"
     ADD CONSTRAINT "post_fk_0"
-    FOREIGN KEY("userId")
-    REFERENCES "user"("id")
+    FOREIGN KEY("userInfoId")
+    REFERENCES "serverpod_user_info"("id")
     ON DELETE NO ACTION
     ON UPDATE NO ACTION;
 
@@ -397,9 +419,9 @@ ALTER TABLE ONLY "serverpod_query_log"
 -- MIGRATION VERSION FOR x_clone_app
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('x_clone_app', '20240208154124177', now())
+    VALUES ('x_clone_app', '20240214151112414', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20240208154124177', "timestamp" = now();
+    DO UPDATE SET "version" = '20240214151112414', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod

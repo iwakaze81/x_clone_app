@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:x_clone_app_client/x_clone_app_client.dart';
+import 'package:x_clone_app_flutter/feature/post/controller/favorite_post.dart';
+import 'package:x_clone_app_flutter/feature/post/model/post_favorites.dart';
+import 'package:x_clone_app_flutter/feature/post/model/post_is_favorite.dart';
 
 class PostTile extends StatelessWidget {
   final Post post;
@@ -45,7 +49,7 @@ class PostTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              post.user?.userInfo?.userName ?? '名無し',
+                              post.userInfo?.userName ?? '名無し',
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall
@@ -95,10 +99,8 @@ class PostTile extends StatelessWidget {
                           text: '0',
                           onPressed: () {},
                         ),
-                        _IconAndTextButton(
-                          icon: Icons.favorite_outline,
-                          text: '0',
-                          onPressed: () {},
+                        _FavoriteButton(
+                          postId: post.id!,
                         ),
                         _IconAndTextButton(
                           icon: Icons.bar_chart_outlined,
@@ -118,15 +120,39 @@ class PostTile extends StatelessWidget {
   }
 }
 
+class _FavoriteButton extends ConsumerWidget {
+  final int postId;
+
+  const _FavoriteButton({required this.postId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteCount = ref.watch(postFavoriteCountProvider(postId));
+    final isFavorite =
+        ref.watch(postIsFavoriteProvider(postId)).valueOrNull ?? false;
+
+    return _IconAndTextButton(
+      icon: isFavorite ? Icons.favorite : Icons.favorite_outline,
+      text: '${favoriteCount.valueOrNull ?? 0}',
+      iconColor: isFavorite ? Colors.red : null,
+      onPressed: () {
+        ref.read(favoritePostProvider).toggleFavorite(postId);
+      },
+    );
+  }
+}
+
 class _IconAndTextButton extends StatelessWidget {
   final IconData icon;
   final String text;
   final VoidCallback onPressed;
+  final Color? iconColor;
 
   const _IconAndTextButton({
     required this.icon,
     required this.text,
     required this.onPressed,
+    this.iconColor,
   });
 
   @override
@@ -136,7 +162,7 @@ class _IconAndTextButton extends StatelessWidget {
       child: Ink(
         child: Row(
           children: [
-            Icon(icon, size: 14),
+            Icon(icon, size: 14, color: iconColor),
             const SizedBox(width: 2),
             Text(
               text,
