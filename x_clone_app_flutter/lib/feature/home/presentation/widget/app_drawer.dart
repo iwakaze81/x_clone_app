@@ -41,6 +41,9 @@ class _UserInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user =
+        ref.watch(sessionNotifierProvider.select((value) => value.user));
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -66,12 +69,12 @@ class _UserInfo extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'User Name',
+            user?.userName ?? '未設定',
             style: Theme.of(context).textTheme.titleMedium,
             textAlign: TextAlign.start,
           ),
           Text(
-            '@UserName',
+            '@${user?.id ?? '未設定'}',
             style: Theme.of(context).textTheme.titleSmall,
             textAlign: TextAlign.start,
           ),
