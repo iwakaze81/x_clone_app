@@ -24,7 +24,7 @@ class PostsNotifier extends AutoDisposeAsyncNotifier<List<Post>> {
       final post = await client.post.createPost(content: content);
 
       await update((state) {
-        return state..add(post);
+        return [post, ...state];
       });
     } on UnauthenticatedException catch (e, s) {
       state = AsyncError(e, s);
