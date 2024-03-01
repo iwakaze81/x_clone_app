@@ -18,8 +18,12 @@ class PostEndpoint extends Endpoint {
 
   Future<Post> createPost(Session session, {required String content}) async {
     final userInfoId = await session.auth.authenticatedUserId;
-
     if (userInfoId == null) {
+      throw UnauthenticatedException(message: 'User not signed in.');
+    }
+
+    final user = await UserInfo.db.findById(session, userInfoId);
+    if (user == null) {
       throw UnauthenticatedException(message: 'User not signed in.');
     }
 
@@ -34,6 +38,6 @@ class PostEndpoint extends Endpoint {
       post,
     );
 
-    return result;
+    return result.copyWith(userInfo: user);
   }
 }
