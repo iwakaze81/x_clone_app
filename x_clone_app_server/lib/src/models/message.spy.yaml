@@ -1,0 +1,7 @@
+class: Message
+table: message
+fields:
+  content: String
+  createdAt: DateTime
+  roomId: int, relation(parent=message_room)
+  userInfo: module:auth:UserInfo?, relation

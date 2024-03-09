@@ -23,6 +23,7 @@ dependencies:
   hooks_riverpod: ^2.4.9
   serverpod_auth_email_flutter: 1.2.2
   serverpod_auth_shared_flutter: 1.2.2
+  serverpod_chat_flutter: 1.2.2
   serverpod_flutter: 1.2.2
   x_clone_app_client:
     path: ../x_clone_app_client

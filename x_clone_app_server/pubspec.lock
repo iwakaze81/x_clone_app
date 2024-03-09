@@ -417,6 +417,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
+  serverpod_chat_server:
+    dependency: "direct main"
+    description:
+      name: serverpod_chat_server
+      sha256: "5df2afd71eacd2b2a39abba9658dd73c7170568872adad3398498887aaaecaf5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.2"
   serverpod_client:
     dependency: transitive
     description:

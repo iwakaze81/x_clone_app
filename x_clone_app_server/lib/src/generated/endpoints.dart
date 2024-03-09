@@ -11,8 +11,11 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/example_endpoint.dart' as _i2;
 import '../endpoints/favorite_post_endpoint.dart' as _i3;
-import '../endpoints/post_endpoint.dart' as _i4;
-import 'package:serverpod_auth_server/module.dart' as _i5;
+import '../endpoints/message_endpoint.dart' as _i4;
+import '../endpoints/message_room_endpoint.dart' as _i5;
+import '../endpoints/post_endpoint.dart' as _i6;
+import 'package:serverpod_auth_server/module.dart' as _i7;
+import 'package:serverpod_chat_server/module.dart' as _i8;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -30,7 +33,19 @@ class Endpoints extends _i1.EndpointDispatch {
           'favoritePost',
           null,
         ),
-      'post': _i4.PostEndpoint()
+      'message': _i4.MessageEndpoint()
+        ..initialize(
+          server,
+          'message',
+          null,
+        ),
+      'messageRoom': _i5.MessageRoomEndpoint()
+        ..initialize(
+          server,
+          'messageRoom',
+          null,
+        ),
+      'post': _i6.PostEndpoint()
         ..initialize(
           server,
           'post',
@@ -124,6 +139,88 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
+    connectors['message'] = _i1.EndpointConnector(
+      name: 'message',
+      endpoint: endpoints['message']!,
+      methodConnectors: {
+        'messages': _i1.MethodConnector(
+          name: 'messages',
+          params: {
+            'messageRoomId': _i1.ParameterDescription(
+              name: 'messageRoomId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['message'] as _i4.MessageEndpoint).messages(
+            session,
+            params['messageRoomId'],
+          ),
+        ),
+        'post': _i1.MethodConnector(
+          name: 'post',
+          params: {
+            'messageRoomId': _i1.ParameterDescription(
+              name: 'messageRoomId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'content': _i1.ParameterDescription(
+              name: 'content',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['message'] as _i4.MessageEndpoint).post(
+            session,
+            params['messageRoomId'],
+            params['content'],
+          ),
+        ),
+      },
+    );
+    connectors['messageRoom'] = _i1.EndpointConnector(
+      name: 'messageRoom',
+      endpoint: endpoints['messageRoom']!,
+      methodConnectors: {
+        'rooms': _i1.MethodConnector(
+          name: 'rooms',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['messageRoom'] as _i5.MessageRoomEndpoint)
+                  .rooms(session),
+        ),
+        'createRoom': _i1.MethodConnector(
+          name: 'createRoom',
+          params: {
+            'participantUserId': _i1.ParameterDescription(
+              name: 'participantUserId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['messageRoom'] as _i5.MessageRoomEndpoint).createRoom(
+            session,
+            params['participantUserId'],
+          ),
+        ),
+      },
+    );
     connectors['post'] = _i1.EndpointConnector(
       name: 'post',
       endpoint: endpoints['post']!,
@@ -135,7 +232,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['post'] as _i4.PostEndpoint).getPosts(session),
+              (endpoints['post'] as _i6.PostEndpoint).getPosts(session),
         ),
         'createPost': _i1.MethodConnector(
           name: 'createPost',
@@ -150,13 +247,14 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['post'] as _i4.PostEndpoint).createPost(
+              (endpoints['post'] as _i6.PostEndpoint).createPost(
             session,
             content: params['content'],
           ),
         ),
       },
     );
-    modules['serverpod_auth'] = _i5.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i7.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_chat'] = _i8.Endpoints()..initializeEndpoints(server);
   }
 }

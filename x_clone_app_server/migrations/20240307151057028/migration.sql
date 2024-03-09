@@ -12,6 +12,39 @@ CREATE TABLE "favorite_post" (
 --
 -- ACTION CREATE TABLE
 --
+CREATE TABLE "message" (
+    "id" serial PRIMARY KEY,
+    "content" text NOT NULL,
+    "createdAt" timestamp without time zone NOT NULL,
+    "roomId" integer NOT NULL,
+    "userInfoId" integer NOT NULL
+);
+
+--
+-- ACTION CREATE TABLE
+--
+CREATE TABLE "message_room" (
+    "id" serial PRIMARY KEY,
+    "name" text NOT NULL,
+    "createdAt" timestamp without time zone NOT NULL
+);
+
+--
+-- ACTION CREATE TABLE
+--
+CREATE TABLE "message_room_user" (
+    "id" serial PRIMARY KEY,
+    "messageRoomId" integer NOT NULL,
+    "userInfoId" integer NOT NULL,
+    "createdAt" timestamp without time zone NOT NULL
+);
+
+-- Indexes
+CREATE UNIQUE INDEX "message_room_user_message_room_user_info_idx" ON "message_room_user" USING btree ("userInfoId");
+
+--
+-- ACTION CREATE TABLE
+--
 CREATE TABLE "post" (
     "id" serial PRIMARY KEY,
     "userInfoId" integer NOT NULL,
@@ -367,6 +400,38 @@ ALTER TABLE ONLY "favorite_post"
 --
 -- ACTION CREATE FOREIGN KEY
 --
+ALTER TABLE ONLY "message"
+    ADD CONSTRAINT "message_fk_0"
+    FOREIGN KEY("roomId")
+    REFERENCES "message_room"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+ALTER TABLE ONLY "message"
+    ADD CONSTRAINT "message_fk_1"
+    FOREIGN KEY("userInfoId")
+    REFERENCES "serverpod_user_info"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
+-- ACTION CREATE FOREIGN KEY
+--
+ALTER TABLE ONLY "message_room_user"
+    ADD CONSTRAINT "message_room_user_fk_0"
+    FOREIGN KEY("messageRoomId")
+    REFERENCES "message_room"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+ALTER TABLE ONLY "message_room_user"
+    ADD CONSTRAINT "message_room_user_fk_1"
+    FOREIGN KEY("userInfoId")
+    REFERENCES "serverpod_user_info"("id")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+--
+-- ACTION CREATE FOREIGN KEY
+--
 ALTER TABLE ONLY "post"
     ADD CONSTRAINT "post_fk_0"
     FOREIGN KEY("userInfoId")
@@ -419,9 +484,9 @@ ALTER TABLE ONLY "serverpod_query_log"
 -- MIGRATION VERSION FOR x_clone_app
 --
 INSERT INTO "serverpod_migrations" ("module", "version", "timestamp")
-    VALUES ('x_clone_app', '20240214151112414', now())
+    VALUES ('x_clone_app', '20240307151057028', now())
     ON CONFLICT ("module")
-    DO UPDATE SET "version" = '20240214151112414', "timestamp" = now();
+    DO UPDATE SET "version" = '20240307151057028', "timestamp" = now();
 
 --
 -- MIGRATION VERSION FOR serverpod

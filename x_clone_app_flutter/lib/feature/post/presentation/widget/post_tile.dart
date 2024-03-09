@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:x_clone_app_client/x_clone_app_client.dart';
 import 'package:x_clone_app_flutter/feature/post/controller/favorite_post.dart';
 import 'package:x_clone_app_flutter/feature/post/model/post_favorites.dart';
 import 'package:x_clone_app_flutter/feature/post/model/post_is_favorite.dart';
+import 'package:x_clone_app_flutter/router/app_router.dart';
 
 class PostTile extends StatelessWidget {
   final Post post;
@@ -34,8 +36,13 @@ class PostTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CircleAvatar(
-              radius: 18,
+            GestureDetector(
+              onTap: () {
+                context.router.push(UserRoute(userId: post.userInfoId));
+              },
+              child: const CircleAvatar(
+                radius: 18,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(

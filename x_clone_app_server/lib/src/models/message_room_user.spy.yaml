@@ -1,0 +1,10 @@
+class: MessageRoomUser
+table: message_room_user
+fields:
+  messageRoom: MessageRoom?, relation
+  userInfo: module:auth:UserInfo?, relation
+  createdAt: DateTime
+indexes:
+  message_room_user_message_room_user_info_idx:
+    fields: userInfoId
+    unique: true

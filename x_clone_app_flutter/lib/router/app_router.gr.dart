@@ -45,10 +45,20 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HomeTabPage(),
       );
     },
-    MessageRoute.name: (routeData) {
+    MessageListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const MessagePage(),
+        child: const MessageListPage(),
+      );
+    },
+    MessageRoomRoute.name: (routeData) {
+      final args = routeData.argsAs<MessageRoomRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MessageRoomPage(
+          roomId: args.roomId,
+          key: args.key,
+        ),
       );
     },
     MessageTabRoute.name: (routeData) {
@@ -103,6 +113,16 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SignUpPage(),
+      );
+    },
+    UserRoute.name: (routeData) {
+      final args = routeData.argsAs<UserRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: UserPage(
+          userId: args.userId,
+          key: args.key,
+        ),
       );
     },
     VerificationCodeRoute.name: (routeData) {
@@ -185,17 +205,55 @@ class HomeTabRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MessagePage]
-class MessageRoute extends PageRouteInfo<void> {
-  const MessageRoute({List<PageRouteInfo>? children})
+/// [MessageListPage]
+class MessageListRoute extends PageRouteInfo<void> {
+  const MessageListRoute({List<PageRouteInfo>? children})
       : super(
-          MessageRoute.name,
+          MessageListRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'MessageRoute';
+  static const String name = 'MessageListRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MessageRoomPage]
+class MessageRoomRoute extends PageRouteInfo<MessageRoomRouteArgs> {
+  MessageRoomRoute({
+    required int roomId,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          MessageRoomRoute.name,
+          args: MessageRoomRouteArgs(
+            roomId: roomId,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'MessageRoomRoute';
+
+  static const PageInfo<MessageRoomRouteArgs> page =
+      PageInfo<MessageRoomRouteArgs>(name);
+}
+
+class MessageRoomRouteArgs {
+  const MessageRoomRouteArgs({
+    required this.roomId,
+    this.key,
+  });
+
+  final int roomId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'MessageRoomRouteArgs{roomId: $roomId, key: $key}';
+  }
 }
 
 /// generated route for
@@ -322,6 +380,43 @@ class SignUpRoute extends PageRouteInfo<void> {
   static const String name = 'SignUpRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [UserPage]
+class UserRoute extends PageRouteInfo<UserRouteArgs> {
+  UserRoute({
+    required int userId,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          UserRoute.name,
+          args: UserRouteArgs(
+            userId: userId,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'UserRoute';
+
+  static const PageInfo<UserRouteArgs> page = PageInfo<UserRouteArgs>(name);
+}
+
+class UserRouteArgs {
+  const UserRouteArgs({
+    required this.userId,
+    this.key,
+  });
+
+  final int userId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'UserRouteArgs{userId: $userId, key: $key}';
+  }
 }
 
 /// generated route for

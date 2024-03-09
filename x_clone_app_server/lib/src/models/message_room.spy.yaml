@@ -1,0 +1,5 @@
+class: MessageRoom
+table: message_room
+fields:
+  name: String
+  createdAt: DateTime

@@ -4,6 +4,12 @@ favoritePost:
   - getFavoriteCount:
   - isFavorite:
   - toggleFavorite:
+message:
+  - messages:
+  - post:
+messageRoom:
+  - rooms:
+  - createRoom:
 post:
   - getPosts:
   - createPost:
