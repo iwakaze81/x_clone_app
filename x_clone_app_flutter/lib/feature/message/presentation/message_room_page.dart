@@ -16,6 +16,7 @@ class MessageRoomPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useState<ChatController?>(null);
     useEffect(() {
+      // TODO(iwakaze81): connectionのハンドリングをちゃんとする必要あり
       singleton<ApiClient>().client.openStreamingConnection().then((_) {
         final chatController = ChatController(
           channel: roomId.toString(),
